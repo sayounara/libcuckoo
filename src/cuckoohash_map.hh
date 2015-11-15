@@ -123,8 +123,7 @@ private:
     static const bool is_simple =
         std::is_pod<key_type>::value && sizeof(key_type) <= 8;
 
-    static const bool value_copy_assignable = std::is_copy_assignable<
-        mapped_type>::value;
+    static const bool value_copy_assignable = true;//std::is_copy_assignable<mapped_type>::value;
 
     // number of locks in the locks_ array
     static const size_t kNumLocks = 1 << 16;
@@ -961,9 +960,9 @@ private:
     }
 
     // A constexpr version of pow that we can use for static_asserts
-    static constexpr size_t const_pow(size_t a, size_t b) {
-        return (b == 0) ? 1 : a * const_pow(a, b - 1);
-    }
+//    static constexpr size_t const_pow(size_t a, size_t b) {
+//        return (b == 0) ? 1 : a * const_pow(a, b - 1);
+//    }
 
     // The maximum number of items in a BFS path.
     static const uint8_t MAX_BFS_PATH_LEN = 5;
@@ -984,10 +983,10 @@ private:
         // we need to hold at most MAX_BFS_PATH_LEN slots. Thus we need the
         // maximum pathcode to be at least SLOT_PER_BUCKET^(MAX_BFS_PATH_LEN)
         size_t pathcode;
-        static_assert(const_pow(SLOT_PER_BUCKET, MAX_BFS_PATH_LEN) <
-                      std::numeric_limits<decltype(pathcode)>::max(),
-                      "pathcode may not be large enough to encode a cuckoo"
-                      " path");
+//        static_assert(const_pow(SLOT_PER_BUCKET, MAX_BFS_PATH_LEN) <
+//                      std::numeric_limits<decltype(pathcode)>::max(),
+//                      "pathcode may not be large enough to encode a cuckoo"
+//                      " path");
         // The 0-indexed position in the cuckoo path this slot occupies. It must
         // be less than MAX_BFS_PATH_LEN, and also able to hold negative values.
         int_fast8_t depth;

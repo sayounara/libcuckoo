@@ -5,27 +5,27 @@ TARGET		= test_cuckoo
 ROOT 		?= .
 LIBSSMEM := $(ROOT)/external
 
-CPP			= g++
+CPP			= g++_mic
 
-CPPFLAGS	=-std=c++11 -O3 -m64 -DNDEBUG -DINTEL64 -D_REENTRANT -lrt -pthread -I$(ROOT)/include -I$(LIBSSMEM)/include
-LFLAGS		=-std=c++11 -O3 -m64 -DNDEBUG -DINTEL64 -D_REENTRANT -lrt -pthread -I$(ROOT)/include -L$(LIBSSMEM)/lib -lsspfd_x86_64 -lssmem_x86_64
+CPPFLAGS	=-std=c++0x -O3 -m64 -Wall -DTAS -DGC=1 -fno-strict-aliasing -DCORE_NUM=32 -DFREQ_GHZ=1.801 -DNDEBUG -DINTEL64 -D_REENTRANT  -DDO_TIMINGS -DLATENCY_ALL_CORES=0  -lrt -pthread -I$(ROOT) -I$(LIBSSMEM)/include# -DUSE_SSPFD -DCOMPUTE_LATENCY
+LFLAGS		=-std=c++0x -O3 -m64 -Wall -DTAS -DGC=1 -fno-strict-aliasing -DCORE_NUM=32 -DFREQ_GHZ=1.801 -DNDEBUG -DINTEL64 -D_REENTRANT  -DDO_TIMINGS -DLATENCY_ALL_CORES=0  -lrt -pthread -I$(ROOT) #-DUSE_SSPFD -L$(LIBSSMEM)/lib -lsspfd -lsspfd_x86_64 -lssmem_x86_64 -DCOMPUTE_LATENCY
 
 OBJS		= $(CPPSRCS:.cpp=.o)
 
 all: $(TARGET)
 
 test_demo.o:
-	$(CPP) $(CPPFLAGS) -c ./tests/benchmarks/test_demo.cc -g
+	$(CPP) $(CPPFLAGS) -c ./tests/benchmarks/test_demo.cc 
 ssalloc.o:
-	$(CPP) $(CPPFLAGS) -c ./tests/benchmarks/ssalloc.cc -g
-#cpp_framework.o:
-#	$(CPP) $(CPPFLAGS) -c ./framework/cpp_framework.cpp -g
+	$(CPP) $(CPPFLAGS) -c ./tests/benchmarks/ssalloc.cc 
+cpp_framework.o:
+	$(CPP) $(CPPFLAGS) -c ./framework/cpp_framework.cpp
 
 $(TARGET): $(OBJS)
-	$(CPP) $(LFLAGS) $(OBJS) -o $(TARGET) -g
+	$(CPP) $(LFLAGS) $(OBJS) -o $(TARGET) $(LFLAGS)
 
 clean:
-	rm -f test_demo.o ssalloc.o $(TARGET)
+	rm -f test_demo.o ssalloc.o $(TARGET) 
 
 depend:
 	mkdep $(SRCS)

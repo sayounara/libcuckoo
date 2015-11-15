@@ -671,7 +671,6 @@ static __attribute__ ((unused)) double eng_per_test_iter_nj[40][5] =
       tmc_task_die("tmc_cpus_set_my_cpu() failed."); 
     }    
 #  else
-    cpu %= (2 * 8);
 
     cpu_set_t mask;
     CPU_ZERO(&mask);
